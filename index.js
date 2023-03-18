@@ -20,7 +20,7 @@ const TCRoutes = require('./routes/trainingCenter');
 const vehicleRoutes = require('./routes/vehicle');
 const userRoutes = require('./routes/user');
 const promoRoutes = require('./routes/promoCode');
-// const updateExpiredPromoCodesRouter = require('./routes/updateExpiredPromoCodes');
+const updateExpiredPromoCodesRouter = require('./routes/updateExpiredPromoCodes');
 
 // local imports
 const coonectDB = require('./db.js');
@@ -44,7 +44,7 @@ app.use('/api/training_center', TCRoutes);
 app.use('/api/vehicle_course', vehicleRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/promo_code', promoRoutes);
-// app.use('/api/updateExpiredPromoCodes', updateExpiredPromoCodesRouter);
+app.use('/api/updateExpiredPromoCodes', updateExpiredPromoCodesRouter);
 
 
 // Serve static files from the "public" directory
