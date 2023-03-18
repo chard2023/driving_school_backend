@@ -23,8 +23,8 @@ const promoRoutes = require('./routes/promoCode');
 
 // local imports
 const coonectDB = require('./db.js')
-// const promoCodeCron = require('./utils/promoCodeCron');
-// promoCodeCron.start();
+const promoCodeCron = require('./utils/promoCodeCron');
+promoCodeCron.start();
 
 // Set up Express app
 const app = express();
