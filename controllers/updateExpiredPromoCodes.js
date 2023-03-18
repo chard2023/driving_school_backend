@@ -1,6 +1,6 @@
 const updateExpiredPromoCodes = require('../utils/promoCodeCron');
 
-module.exports = async (req, res) => {
+const promoCodeStatus = async (req, res) => {
   try {
     await updateExpiredPromoCodes();
     res.status(200).send('Expired promo codes updated successfully');
@@ -9,3 +9,5 @@ module.exports = async (req, res) => {
     res.status(500).send('Error updating expired promo codes');
   }
 };
+
+module.exports = promoCodeStatus;
