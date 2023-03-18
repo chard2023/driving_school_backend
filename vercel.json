@@ -1,19 +1,16 @@
 {
-    "env": {
-        "MONGODB_URI": "mongodb://chard12:bkSrfmE6SDo6cE4m@ac-rlmqqeh-shard-00-00.c3utwsp.mongodb.net:27017,ac-rlmqqeh-shard-00-01.c3utwsp.mongodb.net:27017,ac-rlmqqeh-shard-00-02.c3utwsp.mongodb.net:27017/driving_school?ssl=true&replicaSet=atlas-vo2xcg-shard-0&authSource=admin&retryWrites=true&w=majority"
-    },
-    "version": 2,
-    "builds": [
-      {
-        "src": "./index.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/"
-      }
-    ]
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
   
