@@ -25,5 +25,4 @@ const startPromoCodeCron = () => {
   });
 };
 
-// Call the startPromoCodeCron function to start the cron job
-startPromoCodeCron();
+module.exports = startPromoCodeCron;
