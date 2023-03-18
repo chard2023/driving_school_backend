@@ -1,4 +1,5 @@
 const Promo = require('../models/promoCode');
+const updateExpiredPromoCodes = require('../utils/promoCodeCron');
 
 const getPromo = (req, res) => {
     Promo.find()
@@ -26,9 +27,16 @@ const getPromoById = (req, res) => {
     });
 };
 
-const getPromoByCode = (req, res) => {
+const getPromoByCode = async (req, res) => {
     const promo_code = req.params.promo_code;
-  
+    
+    // Update expired promo codes
+    try {
+        await updateExpiredPromoCodes();
+    } catch (error) {
+        console.error('Error updating expired promo codes:', error);
+    }
+    
     Promo.findOne({ promo_code })
       .then((promo) => {
         if (!promo) {
