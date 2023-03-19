@@ -1,15 +1,15 @@
-const Promo = require('../models/promoCode');
-const startPromoCodeCron = require('../utils/promoCodeCron');
+const PromoCode = require('../models/promoCode');
+const checkExpiredPromoCodes = require('../utils/promoCodeCron');
 
 
 const getPromo = async (req, res) => {
     // Update expired promo codes
     try {
-        await startPromoCodeCron();
+        await checkExpiredPromoCodes();
     } catch (error) {
         console.error('Error updating expired promo codes:', error);
     }
-    Promo.find()
+    PromoCode.find()
     .then((data) => {
         res.json(data);
     })
@@ -21,7 +21,7 @@ const getPromo = async (req, res) => {
 
 const getPromoById = (req, res) => {
     const { id } = req.params;
-    Promo.findById(id)
+    PromoCode.findById(id)
     .then((data) => {
     if (!data) {
         return res.status(404).json({ error: 'Promo code not found' });
@@ -39,12 +39,12 @@ const getPromoByCode = async (req, res) => {
     
     // Update expired promo codes
     try {
-        await startPromoCodeCron();
+        await checkExpiredPromoCodes();
     } catch (error) {
         console.error('Error updating expired promo codes:', error);
     }
     
-    Promo.findOne({ promo_code })
+    PromoCode.findOne({ promo_code })
       .then((promo) => {
         if (!promo) {
           return res.status(404).json({ error: 'Promo code not found' });
@@ -63,7 +63,7 @@ const getPromoByCode = async (req, res) => {
 const createPromo = (req, res) => {
     generateUniquePromoCode(6)
     .then((promoCode) => {
-      const newPromoCode = new Promo({
+      const newPromoCode = new PromoCode({
         name: req.body.name,
         promo_code: promoCode,
         status: 'active',
@@ -87,7 +87,7 @@ const updatePromo = (req, res) => {
     const { id } = req.params;
     const update = req.body;
 
-    Promo.findByIdAndUpdate(id, update, { new: true })
+    PromoCode.findByIdAndUpdate(id, update, { new: true })
     .then((data) => {
         res.json(data);
     })
@@ -100,7 +100,7 @@ const updatePromo = (req, res) => {
 const deletePromo = (req, res) => {
     const { id } = req.params;
     
-    Promo.findByIdAndDelete(id)
+    PromoCode.findByIdAndDelete(id)
     .then(() => {
         res.json({ success: true });
     })
@@ -116,7 +116,7 @@ function generateUniquePromoCode(length) {
     for (let i = 0; i < length; i++) {
       code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    return Promo.exists({ promo_code: code })
+    return PromoCode.exists({ promo_code: code })
     .then((exists) => {
     if (exists) {
         return generateUniquePromoCode(length);
