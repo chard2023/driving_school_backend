@@ -20,6 +20,7 @@ const TCRoutes = require('./routes/trainingCenter');
 const vehicleRoutes = require('./routes/vehicle');
 const userRoutes = require('./routes/user');
 const promoRoutes = require('./routes/promoCode');
+const orderRoutes = require('./routes/order');
 
 // local imports
 const coonectDB = require('./db.js');
@@ -43,6 +44,7 @@ app.use('/api/training_center', TCRoutes);
 app.use('/api/vehicle_course', vehicleRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/promo_code', promoRoutes);
+app.use('/api/order', orderRoutes);
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
