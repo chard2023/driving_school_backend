@@ -9,11 +9,10 @@ const PromoSchema = new mongoose.Schema({
   expiration: { type: Date, required: true },
 });
 
-let PromoCode;
 try {
-  PromoCode = mongoose.model('Promos');
+  const PromoCode = mongoose.model('Promos');
+  module.exports = PromoCode;
 } catch (error) {
-  PromoCode = mongoose.model('Promos', PromoSchema);
+  const PromoCode = mongoose.model('Promos', PromoSchema);
+  module.exports = PromoCode;
 }
-
-module.exports = PromoCode;
