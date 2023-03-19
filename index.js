@@ -20,7 +20,6 @@ const TCRoutes = require('./routes/trainingCenter');
 const vehicleRoutes = require('./routes/vehicle');
 const userRoutes = require('./routes/user');
 const promoRoutes = require('./routes/promoCode');
-const updateExpiredPromoCodesRouter = require('./routes/updateExpiredPromoCodes');
 
 // local imports
 const coonectDB = require('./db.js');
@@ -44,8 +43,6 @@ app.use('/api/training_center', TCRoutes);
 app.use('/api/vehicle_course', vehicleRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/promo_code', promoRoutes);
-app.use('/api/updateExpiredPromoCodes', updateExpiredPromoCodesRouter);
-
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -60,16 +57,14 @@ const upload = multer({
 
 const PORT = 8080;
 
-// Set base URL for uploaded files
-const baseUrl = `http://localhost:${PORT}/uploads/`;
-
 // API endpoint to handle file upload
 app.post('/api/upload', (req, res) => {
     upload(req, res, (err) => {
       if (err) {
         res.status(400).json({ message: 'Error uploading file' });
       } else {
-        const fileUrl = baseUrl + req.file.filename;
+        const serverUrl = `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
         console.log("fileUrl: ",fileUrl);
         res.status(200).json({ message: 'File uploaded successfully', fileUrl: fileUrl });
       }
