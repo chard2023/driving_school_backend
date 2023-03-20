@@ -6,10 +6,18 @@ const bodyParser = require('body-parser');
 
 // Set storage engine
 const storage = multer.diskStorage({
-    destination: './public/uploads/',
-    filename: function(req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
+  destination: function(req, file, cb) {
+    const fullPath = path.join(__dirname, 'public', 'uploads');
+    fs.mkdir(fullPath, (err) => {
+      if (err && err.code !== 'EEXIST') {
+        console.error(err);
+      }
+      cb(null, fullPath);
+    });
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
 });
 
 // route imports
