@@ -41,6 +41,12 @@ app.use(express.json());
 
 // cors
 app.use(cors());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -71,16 +77,17 @@ const PORT = 8080;
 
 // API endpoint to handle file upload
 app.post('/api/upload', (req, res) => {
-    upload(req, res, (err) => {
-      if (err) {
-        res.status(400).json({ message: 'Error uploading file', error: err });
-      } else {
-        const serverUrl = `${req.protocol}://${req.get('host')}`;
-        const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
-        console.log("fileUrl: ",fileUrl);
-        res.status(200).json({ message: 'File uploaded successfully', fileUrl: fileUrl });
-      }
-    });
+  upload(req, res, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(400).json({ message: 'Error uploading file', error: err });
+    } else {
+      const serverUrl = `${req.protocol}://${req.get('host')}`;
+      const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
+      console.log("fileUrl: ",fileUrl);
+      res.status(200).json({ message: 'File uploaded successfully', fileUrl: fileUrl });
+    }
+  });
 });
 
 // Start the server
