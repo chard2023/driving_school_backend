@@ -6,20 +6,10 @@ const bodyParser = require('body-parser');
 
 // Set storage engine
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    const fullPath = path.join(__dirname, 'public', 'uploads');
-    fs.mkdir(fullPath, (err) => {
-      if (err && err.code !== 'EEXIST') {
-        console.error(err);
-        cb(err, null); // Pass the error to the callback function
-      } else {
-        cb(null, fullPath); // Pass null as the first argument to indicate there is no error
-      }
-    });
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
+    destination: './public/uploads/',
+    filename: function(req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
 });
 
 // route imports
@@ -40,24 +30,7 @@ const app = express();
 app.use(express.json());
 
 // cors
-const allowedOrigins = ['https://driving-school-backend.vercel.app', 'https://driving-school-ashen.vercel.app', 'http://localhost:8080'];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-app.use(cors(corsOptions));
-
+app.use(cors());
 
 // Set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -88,17 +61,16 @@ const PORT = 8080;
 
 // API endpoint to handle file upload
 app.post('/api/upload', (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      console.error("upload Error: ",err);
-      res.status(400).json({ message: 'Error uploading file', error: err });
-    } else {
-      const serverUrl = `${req.protocol}://${req.get('host')}`;
-      const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
-      console.log("fileUrl: ",fileUrl);
-      res.status(200).json({ message: 'File uploaded successfully', fileUrl: fileUrl });
-    }
-  });
+    upload(req, res, (err) => {
+      if (err) {
+        res.status(400).json({ message: 'Error uploading file', error: 'err' });
+      } else {
+        const serverUrl = `${req.protocol}://${req.get('host')}`;
+        const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
+        console.log("fileUrl: ",fileUrl);
+        res.status(200).json({ message: 'File uploaded successfully', fileUrl: fileUrl });
+      }
+    });
 });
 
 // Start the server
