@@ -87,7 +87,7 @@ const upload = multer({
 const PORT = 8080;
 
 // API endpoint to handle file upload
-app.post('/api/upload', (req, res) => {
+app.post('/api/upload', cors(corsOptions), (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       console.error(err);
