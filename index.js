@@ -40,7 +40,18 @@ const app = express();
 app.use(express.json());
 
 // cors
-app.use(cors());
+const allowedOrigins = ['https://driving-school-backend.vercel.app/'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
