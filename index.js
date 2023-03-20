@@ -40,7 +40,7 @@ const app = express();
 app.use(express.json());
 
 // cors
-const allowedOrigins = ['https://driving-school-backend.vercel.app'];
+const allowedOrigins = ['https://driving-school-backend.vercel.app', 'https://driving-school-ashen.vercel.app'];
 const corsOptions = {
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin)) {
