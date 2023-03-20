@@ -11,8 +11,10 @@ const storage = multer.diskStorage({
     fs.mkdir(fullPath, (err) => {
       if (err && err.code !== 'EEXIST') {
         console.error(err);
+        cb(err, null); // Pass the error to the callback function
+      } else {
+        cb(null, fullPath); // Pass null as the first argument to indicate there is no error
       }
-      cb(null, fullPath);
     });
   },
   filename: function(req, file, cb) {
