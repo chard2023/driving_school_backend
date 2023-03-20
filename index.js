@@ -63,7 +63,7 @@ const PORT = 8080;
 app.post('/api/upload', (req, res) => {
     upload(req, res, (err) => {
       if (err) {
-        res.status(400).json({ message: 'Error uploading file' });
+        res.status(400).json({ message: 'Error uploading file', error: err });
       } else {
         const serverUrl = `${req.protocol}://${req.get('host')}`;
         const fileUrl = `${serverUrl}/uploads/${req.file.filename}`;
